@@ -1,0 +1,12 @@
+beautifulsoup4
+playwright
+chromadb
+sentence-transformers
+groq
+google-generativeai
+streamlit
+python-dotenv
+pytest
+pydantic
+fastapi
+uvicorn
