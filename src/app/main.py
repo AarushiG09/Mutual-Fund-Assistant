@@ -25,6 +25,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.on_event("startup")
+def startup_event():
+    import threading
+    from src.data.scheduler import start_scheduler
+    # Start the scheduler in a daemon thread so it doesn't block FastAPI startup
+    scheduler_thread = threading.Thread(target=start_scheduler, daemon=True)
+    scheduler_thread.start()
+    logger.info("Daemon scheduler thread started.")
+
 # Static file paths
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 INDEX_HTML_PATH = os.path.join(CURRENT_DIR, "index.html")
