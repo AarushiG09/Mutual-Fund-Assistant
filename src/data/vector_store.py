@@ -8,10 +8,17 @@ from src.data.models import MutualFundScheme
 
 logger = logging.getLogger(__name__)
 
-# Initialize local sentence-transformers embedding function
-embedding_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
-    model_name=EMBEDDING_MODEL_NAME
-)
+# Initialize local sentence-transformers embedding function lazily
+_embedding_fn = None
+
+def get_embedding_fn():
+    global _embedding_fn
+    if _embedding_fn is None:
+        logger.info("Initializing SentenceTransformer embedding function (downloading model if not cached)...")
+        _embedding_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
+            model_name=EMBEDDING_MODEL_NAME
+        )
+    return _embedding_fn
 
 def get_chroma_client() -> chromadb.PersistentClient:
     """Returns a persistent ChromaDB client."""
@@ -21,7 +28,7 @@ def get_collection(client: chromadb.PersistentClient):
     """Returns the mutual funds vector collection."""
     return client.get_or_create_collection(
         name="mutual_fund_facts",
-        embedding_function=embedding_fn
+        embedding_function=get_embedding_fn()
     )
 
 def create_chunks(scheme: MutualFundScheme) -> List[Dict[str, Any]]:
