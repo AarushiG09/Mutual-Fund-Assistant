@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Base directories
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # API Keys
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")

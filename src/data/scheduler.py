@@ -17,9 +17,14 @@ def start_scheduler():
     
     logger.info("Initializing daily ingestion scheduler (scheduled for 10:00 AM IST)...")
     
-    # Run immediate ingestion on boot to ensure database availability
-    logger.info("Running initial ingestion on startup...")
-    run_ingestion()
+    # Run immediate ingestion on boot to ensure database availability if not present
+    from src.config import SQLITE_DB_PATH
+    import os
+    if not os.path.exists(SQLITE_DB_PATH) or os.path.getsize(SQLITE_DB_PATH) == 0:
+        logger.info("Database not found or empty. Running initial ingestion on startup...")
+        run_ingestion()
+    else:
+        logger.info("Pre-existing database found. Skipping startup ingestion to speed up boot.")
     
     try:
         while True:
