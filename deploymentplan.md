@@ -21,7 +21,7 @@ Make sure the following files are in the root of your project:
 - **`requirements.txt`**: Ensure all python packages are listed (FastAPI, Uvicorn, BeautifulSoup4, ChromaDB, Sentence-Transformers, etc.).
 - **`Procfile`**: Contain the start instruction:
   ```text
-  web: uvicorn src.app.main:app --host 0.0.0.0 --port $PORT
+  web: python -m src.app.main
   ```
 
 ### 2. Set Up Render
@@ -32,7 +32,7 @@ Make sure the following files are in the root of your project:
    * **Name**: `mutual-fund-backend`
    * **Runtime**: `Python`
    * **Build Command**: `pip install -r requirements.txt`
-   * **Start Command**: `uvicorn src.app.main:app --host 0.0.0.0 --port $PORT`
+   * **Start Command**: `python -m src.app.main`
 5. Click **Advanced** and add the following **Environment Variables**:
    * `GROQ_API_KEY`: *Your Groq API Key*
    * `GEMINI_API_KEY`: *Your Gemini API Key*
